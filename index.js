@@ -17,16 +17,17 @@ app.use(express.urlencoded({
 app.use(express.json())
 
 app.post('/register/save', (req, res) => {
-   const {title, pageqty} = req.body
+   const {title, pageqty, descricao} = req.body
 
    const book = {
         title,
-        pageqty
+        pageqty,
+        descricao
    }
 
    const query = `
-        insert into books (title, pageqty)
-        values ('${title}', '${pageqty}')
+        insert into books (title, pageqty, descricao)
+        values ('${title}', '${pageqty}', '${descricao}')
    `
 
    conn.query(query, (error) => {
@@ -43,6 +44,109 @@ app.post('/register/save', (req, res) => {
 
 app.get('/register', (req, res) => {
     res.render('register')
+})
+
+app.get('/book/:id', (req, res) => {
+    const id = req.params.id
+
+    const sql = `
+        select * from books
+        where id = ${id}
+    `
+
+    conn.query(sql, (error, data) => {
+        if (error) {
+            return console.log(error)
+        }
+
+        const book = data[0]
+
+        res.render('book', {book})
+    })
+})
+
+
+app.get('/delete/:id', (req, res) => {
+    const id = req.params.id
+
+    const sql = `
+        select * from books
+        where id = ${id}
+    `
+
+    conn.query(sql, (error, data) => {
+        if (error) {
+            return console.log(error)
+        }
+
+        const book = data[0]
+
+        res.render('delete', {book})
+    })
+})
+
+app.post('/delete/:id/delete', (req, res) => {
+    const id = req.params.id
+
+    const sql = `
+        delete from books
+        where id = ${id};
+    `
+
+    conn.query(sql, (error) => {
+        if (error) {
+            return console.log(error)
+        }
+
+        res.redirect('/')
+    })
+
+})
+
+app.get('/update/:id', (req, res) => {
+    const id = req.params.id
+
+    const sql = `
+        select * from books
+        where id = ${id}
+    `
+
+    conn.query(sql, (error, data) => {
+        if (error) {
+            return console.log(error)
+        }
+
+        const book = data[0]
+
+        res.render('update', {book})
+    })
+})
+
+app.post('/update/:id/save', (req, res) => {
+    const id = req.params.id
+    const {title, pageqty, descricao} = req.body
+
+   const book = {
+        title,
+        pageqty,
+        descricao
+   }
+
+   const query = `
+        update books
+        set title = '${title}', pageqty = '${pageqty}', descricao = '${descricao}'
+        where id = ${id}
+   `
+
+   conn.query(query, (error) => {
+    if (error) {
+        console.log(error)
+        return
+    }
+
+   })
+   
+   res.redirect('/')
 })
 
 app.get('/', (req, res) => {
