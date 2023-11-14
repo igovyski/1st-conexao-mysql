@@ -5,9 +5,11 @@
     <div class="book">
         <h3>Título: {{this.title}}</h3>
         <p>Quantidade de páginas: {{this.pageqty}}</p>
-        <a href="/book/{{this.id}}">Ver mais</a>
-        <a href="/update/{{this.id}}">Editar</a>
-        <a href="/delete/{{this.id}}">Deletar</a>
+        <div class="buttons">
+            <a href="/book/{{this.id}}" class="mais">Ver mais</a>
+            <a href="/update/{{this.id}}" class="editar">Editar</a>
+            <a href="/delete/{{this.id}}" class="deletar">Deletar</a>
+        </div>
     </div>
     {{/each}}
 </main>

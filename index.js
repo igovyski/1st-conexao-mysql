@@ -122,31 +122,24 @@ app.get('/update/:id', (req, res) => {
     })
 })
 
-app.post('/update/:id/save', (req, res) => {
-    const id = req.params.id
-    const {title, pageqty, descricao} = req.body
+app.post('/update/save', (req, res) => {
+    const {id, title, pageqty, descricao} = req.body
 
-   const book = {
-        title,
-        pageqty,
-        descricao
-   }
-
-   const query = `
+    const query = `
         update books
         set title = '${title}', pageqty = '${pageqty}', descricao = '${descricao}'
         where id = ${id}
-   `
+    `
 
-   conn.query(query, (error) => {
+    conn.query(query, (error) => {
     if (error) {
         console.log(error)
         return
     }
 
-   })
+    })
    
-   res.redirect('/')
+    res.redirect('/')
 })
 
 app.get('/', (req, res) => {
