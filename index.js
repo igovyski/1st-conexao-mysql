@@ -16,6 +16,7 @@ app.use(express.urlencoded({
 
 app.use(express.json())
 
+// rotas
 app.post('/register/save', (req, res) => {
    const {title, pageqty, descricao} = req.body
 
